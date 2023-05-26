@@ -1,13 +1,11 @@
-const { openTasksView, completedTasksView } = require("../ui/app-home");
+const { openTasksView, completedTasksView } = require("../ui/dashboard");
 const { Task } = require("../models");
 
 module.exports = async (client, slackUserID, slackWorkspaceID, navTab) => {
     try {
         if (navTab === "completed") {
             const recentlyCompletedTasks = await Task.findAll({
-                where: {
-                    status: "CLOSED",
-                },
+                where: { status: "CLOSED" },
             });
 
             await client.views.publish({
