@@ -1,0 +1,25 @@
+{
+  "name": "slack-tasks-bot",
+  "version": "1.0.0",
+  "description": "A Slack bot written in JS for managing tasks in a workplace",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mreeve29/slack-tasks-bot.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mreeve29/slack-tasks-bot/issues"
+  },
+  "homepage": "https://github.com/mreeve29/slack-tasks-bot#readme",
+  "dependencies": {
+    "@slack/bolt": "^3.13.1",
+    "dotenv": "^16.0.3",
+    "sequelize": "^6.31.1",
+    "sqlite3": "^5.1.6"
+  }
+}
