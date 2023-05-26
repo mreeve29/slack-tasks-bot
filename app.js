@@ -4,6 +4,8 @@ const { App, LogLevel } = require("@slack/bolt");
 
 const { Sequelize } = require("sequelize");
 
+const { registerListeners } = require("./listeners");
+
 const sequelize = new Sequelize(process.env.DB_URI);
 
 const app = new App({
@@ -13,6 +15,7 @@ const app = new App({
     loglevel: LogLevel.INFO,
 });
 
+registerListeners(app);
 (async () => {
     try {
         await sequelize.authenticate();

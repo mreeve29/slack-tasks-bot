@@ -19,7 +19,10 @@
   "dependencies": {
     "@slack/bolt": "^3.13.1",
     "dotenv": "^16.0.3",
+    "luxon": "^3.3.0",
+    "pluralize": "^8.0.0",
     "sequelize": "^6.31.1",
+    "slack-block-builder": "^2.7.2",
     "sqlite3": "^5.1.6"
   }
 }
