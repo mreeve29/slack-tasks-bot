@@ -60,7 +60,7 @@ const editTaskModalCallback = async ({ ack, view, body, client }) => {
             if (task.msg) {
                 try {
                     await client.chat.delete({
-                        channel: "C058WL28V8D",
+                        channel: process.env.TODO_CHANNEL,
                         ts: task.msg,
                     });
 

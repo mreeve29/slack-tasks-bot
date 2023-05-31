@@ -6,7 +6,10 @@ module.exports = async (taskID, body, client) => {
         task.assignedTo = body.user.id;
         await task.save();
         // delete message
-        await client.chat.delete({ channel: "C058WL28V8D", ts: task.msg });
+        await client.chat.delete({
+            channel: process.env.TODO_CHANNEL,
+            ts: task.msg,
+        });
         task.msg = null;
         await task.save();
     } catch (error) {

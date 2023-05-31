@@ -7,7 +7,10 @@ module.exports = async (taskID, client) => {
         const task = await Task.findOne({ where: { id: taskID } });
         // delete message if exists
         if (task.msg) {
-            await client.chat.delete({ channel: "C058WL28V8D", ts: task.msg });
+            await client.chat.delete({
+                channel: process.env.TODO_CHANNEL,
+                ts: task.msg,
+            });
         }
         await Task.destroy({ where: { id: taskID } });
     } catch (error) {

@@ -6,6 +6,10 @@ const { Sequelize } = require("sequelize");
 
 const { registerListeners } = require("./listeners");
 
+const { BirthdayCheck } = require("./birthdays/birthdayCheck");
+
+const { CronJob } = require("cron");
+
 const sequelize = new Sequelize(process.env.DB_URI);
 
 const app = new App({
@@ -26,6 +30,18 @@ registerListeners(app);
         console.log("Connection has been established successfully.");
         // Start app
         await app.start();
+
+        // creates a job to check for birthdays at 9:30am every day
+        var birthdayJob = new CronJob(
+            // syntax: second minute hour day month year, * = any
+            "00 30 9 * * *",
+            function () {
+                BirthdayCheck(app.client);
+            },
+            null,
+            true,
+            "America/New_York"
+        );
 
         // eslint-disable-next-line no-console
         console.log("⚡️ Tasks app is running!");
