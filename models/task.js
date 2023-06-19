@@ -11,6 +11,11 @@ module.exports = (sequelize, DataTypes) => {
                 values: ["OPEN", "CLOSED"],
                 defaultValue: "OPEN",
             },
+            priority: {
+                type: DataTypes.ENUM,
+                values: ["NORMAL", "HIGH"],
+                defaultValue: "NORMAL",
+            },
             assignedTo: DataTypes.STRING,
             dueDate: DataTypes.DATE,
             msg: DataTypes.STRING,

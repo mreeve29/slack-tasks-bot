@@ -13,6 +13,9 @@ module.exports = {
             status: {
                 type: Sequelize.ENUM("OPEN", "CLOSED"),
             },
+            priority: {
+                type: Sequelize.ENUM("NORMAL", "HIGH"),
+            },
             assignedTo: {
                 allowNull: true,
                 type: Sequelize.STRING,

@@ -1,4 +1,15 @@
-const { Modal, Blocks, Elements } = require("slack-block-builder");
+const { Modal, Blocks, Elements, Bits } = require("slack-block-builder");
+
+const priorityOptions = [
+    Bits.Option({
+        text: "Normal",
+        value: "NORMAL",
+    }),
+    Bits.Option({
+        text: "High",
+        value: "HIGH",
+    }),
+];
 
 module.exports = (prefilledTitle, currentUser) => {
     const textInput = (taskTitle) => {
@@ -42,6 +53,16 @@ module.exports = (prefilledTitle, currentUser) => {
                 Elements.TimePicker({
                     actionId: "taskDueTime",
                 })
+            ),
+            Blocks.Input({
+                label: "Priority",
+                blockId: "taskPriority",
+            }).element(
+                Elements.StaticSelect({
+                    actionId: "taskPriority",
+                })
+                    .options(priorityOptions)
+                    .initialOption(priorityOptions[0])
             )
         )
         .buildToJSON();

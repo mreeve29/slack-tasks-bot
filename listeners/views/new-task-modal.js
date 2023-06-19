@@ -16,7 +16,10 @@ const newTaskModalCallback = async ({ ack, view, body, client }) => {
     const selectedUser =
         providedValues.taskAssignUser.taskAssignUser.selected_user;
 
-    const task = Task.build({ title: taskTitle });
+    const priority =
+        providedValues.taskPriority.taskPriority.selected_option.value;
+
+    const task = Task.build({ title: taskTitle, priority: priority });
 
     const taskDueDate = DateTime.fromISO(`${selectedDate}T${selectedTime}`);
     const diffInDays = taskDueDate.diffNow("days").toObject().days;

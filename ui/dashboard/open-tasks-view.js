@@ -5,7 +5,6 @@ const {
     Section,
     Actions,
     Elements,
-    Input,
     Bits,
 } = require("slack-block-builder");
 const pluralize = require("pluralize");
@@ -32,11 +31,7 @@ module.exports = (openTasks) => {
     );
 
     if (openTasks.length === 0) {
-        homeTab.blocks(
-            Header({ text: "No open tasks" }),
-            Divider(),
-            Section({ text: "Looks like you've got nothing to do." })
-        );
+        homeTab.blocks(Header({ text: "No open tasks" }), Divider());
         return homeTab.buildToJSON();
     }
 
@@ -58,8 +53,13 @@ module.exports = (openTasks) => {
                   emoji: "true",
               });
 
+        let headerText = task.title;
+        if (task.priority == "HIGH") {
+            headerText += " :red_circle:";
+        }
+
         tasksInputsArray.push(
-            Header({ text: `${task.title}` }),
+            Header({ text: `${headerText}` }),
             Section({
                 type: "mrkdwn",
                 text: `${sectionNameText}\nDue: *${date}*`,

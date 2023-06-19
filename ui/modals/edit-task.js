@@ -1,5 +1,16 @@
-const { Modal, Blocks, Elements } = require("slack-block-builder");
+const { Modal, Blocks, Elements, Bits } = require("slack-block-builder");
 const { DateTime } = require("luxon");
+
+const priorityOptions = [
+    Bits.Option({
+        text: "Normal",
+        value: "NORMAL",
+    }),
+    Bits.Option({
+        text: "High",
+        value: "HIGH",
+    }),
+];
 
 module.exports = (task, taskID) => {
     const date = new Date(task.dueDate);
@@ -9,6 +20,17 @@ module.exports = (task, taskID) => {
               task.assignedTo
           )
         : Elements.UserSelect({ actionId: "taskAssignUser" });
+
+    let currentPriority = null;
+
+    switch (task.priority) {
+        case "NORMAL":
+            currentPriority = priorityOptions[0];
+            break;
+        case "HIGH":
+            currentPriority = priorityOptions[1];
+            break;
+    }
 
     return Modal({
         title: "Edit task",
@@ -37,6 +59,16 @@ module.exports = (task, taskID) => {
                 Elements.TimePicker({
                     actionId: "taskDueTime",
                 }).initialTime(DateTime.fromJSDate(date).toFormat("HH:mm"))
+            ),
+            Blocks.Input({
+                label: "Priority",
+                blockId: "taskPriority",
+            }).element(
+                Elements.StaticSelect({
+                    actionId: "taskPriority",
+                })
+                    .options(priorityOptions)
+                    .initialOption(currentPriority)
             )
         )
         .privateMetaData(taskID)
