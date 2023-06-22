@@ -11,7 +11,7 @@ const deleteTaskModalCallback = async ({ ack, view, body, client }) => {
     } catch (error) {
         await ack({
             response_action: "update",
-            view: modals.taskCreationError("", "deleting task"),
+            view: modals.taskError("", "deleting task"),
         });
         // eslint-disable-next-line no-console
         console.error(error);

@@ -63,7 +63,7 @@ const newTaskModalCallback = async ({ ack, view, body, client }) => {
     } catch (error) {
         await ack({
             response_action: "update",
-            view: modals.taskCreationError(taskTitle, "creating"),
+            view: modals.taskError(taskTitle, "creating"),
         });
         // eslint-disable-next-line no-console
         console.error(error);
