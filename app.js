@@ -43,6 +43,19 @@ registerListeners(app);
             "America/New_York"
         );
 
+        // TODO: add daily message to to-do channel for tasks due that day
+        // creates a job to send tasks for the day at 9:30am every day
+        // var birthdayJob = new CronJob(
+        //     // syntax: second minute hour day month year, * = any
+        //     "00 30 9 * * *",
+        //     function () {
+        //         // add task message sender
+        //     },
+        //     null,
+        //     true,
+        //     "America/New_York"
+        // );
+
         // eslint-disable-next-line no-console
         console.log("⚡️ Tasks app is running!");
     } catch (error) {

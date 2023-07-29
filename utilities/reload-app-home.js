@@ -1,7 +1,31 @@
-const { openTasksView, completedTasksView } = require("../ui/dashboard");
+const {
+    openTasksView,
+    completedTasksView,
+    noAccessView,
+} = require("../ui/dashboard");
 const { Task } = require("../models");
 
+const { ids } = require("../slackIDs.json", { throws: true });
+
 module.exports = async (client, slackUserID, slackWorkspaceID, navTab) => {
+    // check if user has access to bot
+    if (ids) {
+        if (!ids.includes(slackUserID)) {
+            // user does not have access to tasks page
+            // show them a default view
+            try {
+                await client.views.publish({
+                    user_id: slackUserID,
+                    view: noAccessView(),
+                });
+                return;
+            } catch (error) {
+                // eslint-disable-next-line no-console
+                console.error(error);
+            }
+        }
+    }
+
     try {
         if (navTab === "completed") {
             const recentlyCompletedTasks = await Task.findAll({

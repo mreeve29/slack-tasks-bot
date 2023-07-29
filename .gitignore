@@ -125,3 +125,6 @@ dist
 
 # birthdays
 birthdays.json
+
+# user Slack IDs
+slackIDs.json

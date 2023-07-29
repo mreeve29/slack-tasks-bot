@@ -24,7 +24,9 @@ const determineAge = (date) => {
 module.exports = (name, bday) =>
     Message({
         channel: process.env.BDAY_CHANNEL,
-        text: `:birthday: Happy ${determineAge(
+        text: `:birthday: Wish ${name} a happy ${determineAge(
             bday
-        )} Birthday ${name}! :partying_face:`,
-    }).buildToObject();
+        )} birthday! :partying_face:`,
+    })
+        .asUser(true)
+        .buildToObject();
