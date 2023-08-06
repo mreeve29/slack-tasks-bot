@@ -18,6 +18,8 @@ module.exports = (sequelize, DataTypes) => {
             },
             assignedTo: DataTypes.STRING,
             dueDate: DataTypes.DATE,
+            completedDate: DataTypes.DATE,
+            completedBy: DataTypes.STRING,
             msg: DataTypes.STRING,
         },
         {

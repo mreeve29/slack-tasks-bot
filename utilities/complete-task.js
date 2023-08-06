@@ -1,8 +1,7 @@
-const { Op } = require("sequelize");
-
+const { DateTime } = require("luxon");
 const { Task } = require("../models");
 
-module.exports = async (taskID, client) => {
+module.exports = async (taskID, body, client) => {
     try {
         let task = await Task.findOne({ where: { id: taskID } });
         // delete message if exists
@@ -13,6 +12,8 @@ module.exports = async (taskID, client) => {
             });
         }
         task.status = "CLOSED";
+        task.completedDate = DateTime.now();
+        task.completedBy = body.user.id;
         task.msg = null;
         await task.save();
     } catch (error) {

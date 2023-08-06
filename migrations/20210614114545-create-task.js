@@ -24,6 +24,14 @@ module.exports = {
                 allowNull: false,
                 type: Sequelize.DATE,
             },
+            completedDate: {
+                allowNull: true,
+                type: Sequelize.DATE,
+            },
+            completedBy: {
+                allowNull: true,
+                type: Sequelize.STRING,
+            },
             msg: {
                 allowNull: true,
                 type: Sequelize.STRING,

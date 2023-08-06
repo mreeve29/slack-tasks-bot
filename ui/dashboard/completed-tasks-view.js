@@ -7,6 +7,7 @@ const {
     Elements,
 } = require("slack-block-builder");
 const pluralize = require("pluralize");
+const { DateTime } = require("luxon");
 
 module.exports = (recentlyCompletedTasks) => {
     const homeTab = HomeTab({
@@ -29,25 +30,38 @@ module.exports = (recentlyCompletedTasks) => {
     );
 
     if (recentlyCompletedTasks.length === 0) {
-        homeTab.blocks(
-            Header({ text: "No completed tasks" }),
-            Divider(),
-            Section({ text: "Looks like you've got nothing completed." })
-        );
+        homeTab.blocks(Header({ text: "No completed tasks" }), Divider());
         return homeTab.buildToJSON();
     }
 
-    const completedTaskList = recentlyCompletedTasks.map((task) =>
-        Section({ text: `• ~${task.title}~` }).accessory(
-            Elements.Button({ text: "Reopen" })
-                .value(`${task.id}`)
-                .actionId("reopen-task")
-        )
-    );
+    var completedTaskList = [];
+
+    recentlyCompletedTasks.forEach(([task, assignedName, completedName]) => {
+        let headerText = task.title;
+        if (task.priority == "HIGH") {
+            headerText += " :red_circle:";
+        }
+
+        const date = DateTime.fromJSDate(task.completedDate).toFormat(
+            "ccc LLL d t"
+        );
+
+        completedTaskList.push(
+            Header({ type: "mrkdwn", text: `${headerText}` }),
+            Section({
+                text: `:bust_in_silhouette: ${assignedName}\n:white_check_mark: ${completedName} at *${date}*`,
+            }).accessory(
+                Elements.Button({ text: "Reopen" })
+                    .value(`${task.id}`)
+                    .actionId("reopen-task")
+            ),
+            Divider()
+        );
+    });
 
     homeTab.blocks(
         Header({
-            text: `You have ${
+            text: `${
                 recentlyCompletedTasks.length
             } recently completed ${pluralize(
                 "task",
@@ -55,7 +69,7 @@ module.exports = (recentlyCompletedTasks) => {
             )}`,
         }),
         Divider(),
-        completedTaskList
+        completedTaskList.slice(0, -1)
     );
 
     return homeTab.buildToJSON();

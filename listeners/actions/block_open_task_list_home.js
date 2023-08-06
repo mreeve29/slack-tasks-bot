@@ -15,6 +15,7 @@ const openTaskCheckboxClickedCallback = async ({
         if (type === "complete") {
             await completeTask(
                 action.selected_option.value.split("-")[2],
+                body,
                 client
             );
             await reloadAppHome(client, body.user.id, body.team.id);
@@ -36,7 +37,6 @@ const openTaskCheckboxClickedCallback = async ({
             const task = await Task.findOne({
                 where: { id: action.selected_option.value.split("-")[2] },
             });
-            console.log(task);
             await client.views.open({
                 trigger_id: body.trigger_id,
                 view: deleteTask(

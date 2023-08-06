@@ -62,7 +62,7 @@ module.exports = (openTasks) => {
             Header({ text: `${headerText}` }),
             Section({
                 type: "mrkdwn",
-                text: `${sectionNameText}\nDue: *${date}*`,
+                text: `:bust_in_silhouette: ${sectionNameText}\n:spiral_calendar_pad: *${date}*`,
             }).accessory(
                 Elements.OverflowMenu()
                     .actionId("blockOpenTaskCheckboxClicked")

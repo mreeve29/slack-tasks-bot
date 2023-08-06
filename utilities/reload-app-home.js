@@ -30,11 +30,17 @@ module.exports = async (client, slackUserID, slackWorkspaceID, navTab) => {
         if (navTab === "completed") {
             const recentlyCompletedTasks = await Task.findAll({
                 where: { status: "CLOSED" },
+                order: [["completedDate", "DESC"]],
             });
+
+            const tasks = await addNamesToClosedTasks(
+                recentlyCompletedTasks,
+                client
+            );
 
             await client.views.publish({
                 user_id: slackUserID,
-                view: completedTasksView(recentlyCompletedTasks),
+                view: completedTasksView(tasks),
             });
             return;
         }
@@ -46,7 +52,7 @@ module.exports = async (client, slackUserID, slackWorkspaceID, navTab) => {
             order: [["dueDate", "ASC"]],
         });
 
-        const tasks = await addNamesToTasks(openTasks, client);
+        const tasks = await addNamesToOpenTasks(openTasks, client);
 
         await client.views.publish({
             user_id: slackUserID,
@@ -58,7 +64,7 @@ module.exports = async (client, slackUserID, slackWorkspaceID, navTab) => {
     }
 };
 
-const addNamesToTasks = async (arr, client) => {
+const addNamesToOpenTasks = async (arr, client) => {
     new_arr = [];
     for (t of arr) {
         const userId = t.assignedTo;
@@ -75,6 +81,49 @@ const addNamesToTasks = async (arr, client) => {
             } catch (error) {
                 console.error(error);
                 new_arr.push([t, "error getting name"]);
+            }
+        }
+    }
+    return new_arr;
+};
+
+const addNamesToClosedTasks = async (arr, client) => {
+    new_arr = [];
+    for (t of arr) {
+        const assignedUserId = t.assignedTo;
+        const completedUserId = t.completedBy;
+        if (assignedUserId == null || completedUserId == null) {
+            new_arr.push([t, null, null]);
+        } else {
+            try {
+                // Call the users.info method using the WebClient
+
+                let assignedName = "";
+                let completedName = "";
+
+                if (assignedUserId === completedUserId) {
+                    const assignedResult = await client.users.info({
+                        user: assignedUserId,
+                    });
+                    assignedName = assignedResult.user.real_name;
+                    completedName = assignedName;
+                } else {
+                    const assignedResult = await client.users.info({
+                        user: assignedUserId,
+                    });
+
+                    const completedResult = await client.users.info({
+                        user: completedUserId,
+                    });
+
+                    assignedName = assignedResult.user.real_name;
+                    completedName = completedResult.user.real_name;
+                }
+
+                new_arr.push([t, assignedName, completedName]);
+            } catch (error) {
+                console.error(error);
+                new_arr.push([t, "error getting name", "error getting name"]);
             }
         }
     }

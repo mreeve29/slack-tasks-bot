@@ -5,7 +5,6 @@ const {
     appDashboardCreateATaskCallback,
 } = require("./block_dashboard-nav-create-a-task");
 const { appDashboardOpenCallback } = require("./block_dashboard-nav-open");
-const { buttonMarkAsDoneCallback } = require("./block_button-mark-as-done");
 const { reopenTaskCallback } = require("./block_reopen-task");
 const {
     openTaskCheckboxClickedCallback,
@@ -21,10 +20,6 @@ module.exports.register = (app) => {
     app.action(
         { action_id: "dashboard-nav-open", type: "block_actions" },
         appDashboardOpenCallback
-    );
-    app.action(
-        { action_id: "button-mark-as-done", type: "block_actions" },
-        buttonMarkAsDoneCallback
     );
     app.action(
         { action_id: "reopen-task", type: "block_actions" },
