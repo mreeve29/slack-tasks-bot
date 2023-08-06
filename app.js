@@ -10,7 +10,11 @@ const { BirthdayCheck } = require("./birthdays/birthdayCheck");
 
 const { CronJob } = require("cron");
 
+const { Settings } = require("luxon");
+
 const sequelize = new Sequelize(process.env.DB_URI);
+
+Settings.defaultZone = "America/New_York";
 
 const app = new App({
     token: process.env.SLACK_BOT_TOKEN,

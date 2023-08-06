@@ -12,7 +12,7 @@ module.exports = async (taskID, body, client) => {
             });
         }
         task.status = "CLOSED";
-        task.completedDate = DateTime.fromObject({ zone: "America/New_York" });
+        task.completedDate = DateTime.now();
         task.completedBy = body.user.id;
         task.msg = null;
         await task.save();
